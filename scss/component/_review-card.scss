@@ -1,0 +1,85 @@
+@use "../abstracts";
+.review-card {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  &__heading {
+    font-weight: 600;
+    line-height: 1.4;
+    font-size: 2.6rem;
+    margin-bottom: 30px;
+  }
+  &__col {
+    border: 1.5px solid var(--primary-color-2);
+    padding: 20px;
+    border-radius: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__content {
+    margin-bottom: 20px;
+    gap: 10px;
+    display: flex;
+    @include abstracts.screen(xl) {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+    @include abstracts.screen(md) {
+      flex-direction: row;
+      align-items: initial;
+      text-align: initial;
+      justify-content: initial;
+    }
+  }
+  &__title {
+    margin-bottom: 6px;
+    font-weight: 2.2rem;
+    font-weight: 600;
+    line-height: 1.42;
+  }
+  &__desc {
+    font-weight: 400;
+    line-height: 1.35;
+    font-size: 1.6rem;
+  }
+  &__thumb {
+    --review-card-thumb-width: 80px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    object-fit: cover;
+    width: var(--review-card-thumb-width);
+    height: var(--review-card-thumb-width);
+    border-radius: 999px;
+    display: block;
+    @include abstracts.screen(md) {
+      --review-card-thumb-width: 70px;
+    }
+  }
+  &__rating {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    @include abstracts.screen(xl) {
+      justify-content: center;
+    }
+    @include abstracts.screen(md) {
+      justify-content: start;
+    }
+  }
+  &__rating-desc {
+    @include abstracts.screen(xl) {
+      display: none;
+    }
+    @include abstracts.screen(md) {
+      display: block;
+    }
+  }
+  &__stars {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+}

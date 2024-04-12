@@ -1,0 +1,10 @@
+.home {
+  padding-top: 30px;
+}
+@media (max-width: 767.98px) {
+  .home {
+    padding-top: 15px;
+  }
+}
+
+/*# sourceMappingURL=index.css.map */

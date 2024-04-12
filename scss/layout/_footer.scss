@@ -1,0 +1,75 @@
+@use "../abstracts";
+.footer {
+  color: var(--primary-color-3);
+  background: var(--primary-color-2);
+  margin-top: 20px;
+  &__inner {
+    padding: 40px 0;
+  }
+  &__logo {
+    margin-bottom: 20px;
+    @include abstracts.screen(lg) {
+      max-width: 400px;
+    }
+    &-inner {
+      border-radius: 999px;
+      border: 1px solid var(--primary-color-3);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      @include abstracts.screen(md) {
+        gap: 5px;
+      }
+    }
+    &-icon {
+      display: block;
+      border-radius: 999px;
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+    &-icon-wrap {
+      flex: 0 0 auto;
+      overflow: hidden;
+      border-radius: 999px;
+    }
+    &-name {
+      font-weight: 600;
+      font-size: 2.6rem;
+      line-height: 1.5;
+      padding: 0 15px;
+      color: var(--primary-color-3);
+      @include abstracts.screen(xl) {
+        font-size: 2.4rem;
+        padding: 0;
+      }
+      @include abstracts.screen(lg) {
+        font-size: 2.2rem;
+      }
+      @include abstracts.screen(md) {
+        font-size: 2rem;
+      }
+    }
+  }
+  &__desc {
+    font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 1.42;
+  }
+  &__item {
+    a {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 1.3;
+    }
+  }
+  &__item + &__item {
+    margin-top: 20px;
+    @include abstracts.screen(lg) {
+      margin-top: 10px;
+    }
+  }
+}
+.coppyright {
+  margin-top: 30px;
+}

@@ -1,0 +1,96 @@
+@use "../abstracts";
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  &__container {
+    padding-top: 10px;
+  }
+  &__content {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 10px 0;
+  }
+  &__list {
+    height: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @include abstracts.screen(md) {
+      gap: 10px;
+    }
+  }
+  &__item {
+    font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 1.6;
+    padding: 10px;
+    @include abstracts.screen(md) {
+      padding: 10px 5px;
+      font-size: 1.8rem;
+      &-wrap {
+        border: 1px solid var(--primary-color-3);
+        border-radius: 10px;
+      }
+    }
+  }
+}
+.topbar {
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include abstracts.screen(md) {
+    justify-content: center;
+  }
+  &__logo {
+    &-inner {
+      border-radius: 999px;
+      padding: 5px 20px 5px 5px;
+      border: 1px solid var(--primary-color);
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      @include abstracts.screen(md) {
+        gap: 10px;
+      }
+    }
+    &-icon {
+      display: block;
+      width: 100%;
+      object-fit: contain;
+    }
+    &-icon-wrap {
+      flex: 1;
+      width: 50px;
+      overflow: hidden;
+      border-radius: 999px;
+    }
+    &-name {
+      font-weight: 600;
+      font-size: 2.6rem;
+      line-height: 1.5;
+      color: var(--primary-color);
+      @include abstracts.screen(md) {
+        font-size: 2.2rem;
+      }
+    }
+  }
+
+  &__user-list {
+    display: flex;
+    align-items: center;
+  }
+  &__user-icon,
+  &__menu-icon {
+    width: 40px;
+  }
+  &__user-icon {
+    display: none;
+    @include abstracts.screen(md) {
+      display: block;
+    }
+  }
+}

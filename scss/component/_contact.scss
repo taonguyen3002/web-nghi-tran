@@ -1,0 +1,48 @@
+@use "../abstracts";
+.contact {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  @include abstracts.screen(md) {
+    bottom: 20px;
+    right: 15px;
+    gap: 10px;
+  }
+  &__item {
+    background: #fff;
+    position: relative;
+    padding: 15px;
+    border: 1.5px solid #ccc;
+    border-radius: 50%;
+    z-index: 100;
+    @include abstracts.screen(md) {
+      padding: 10px;
+      width: 70px;
+      height: 70px;
+    }
+  }
+  &__item + &__item {
+    margin-top: 20px;
+  }
+  &__phone {
+    animation: phonerotate infinite;
+    animation-duration: 0.5s;
+  }
+}
+@keyframes phonerotate {
+  10% {
+    rotate: 15deg;
+  }
+  25% {
+    rotate: -15deg;
+  }
+  35% {
+    rotate: -15deg;
+  }
+  50% {
+    rotate: 15deg;
+  }
+}

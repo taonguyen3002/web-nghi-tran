@@ -1,0 +1,55 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  background: var(--bg-body-color);
+  color: var(--text-color);
+  font-size: 1.6rem;
+  font-family: "Open Sans", sans-serif;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+input,
+button {
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+textarea,
+button,
+input,
+select {
+  color: inherit;
+  font-family: inherit;
+}
+.icon {
+  filter: brightness(0) saturate(100%) invert(31%) sepia(33%) saturate(7319%)
+    hue-rotate(253deg) brightness(97%) contrast(108%);
+}
+.separate {
+  width: 60vw;
+  height: 1.5px;
+  background: var(--primary-color-2);
+  margin: 30px auto;
+  border-radius: 999px;
+}
+.text {
+  &--bold {
+    font-weight: 700;
+  }
+  &--large {
+    font-size: 2.4rem;
+  }
+  &--blue {
+    color: blue;
+  }
+}
