@@ -1,17 +1,85 @@
+// File: app.js
+
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-/**
- * Hàm tải template
- *
- * Cách dùng:
- * <div id="parent"></div>
- * <script>
- *  load("#parent", "./path-to-template.html");
- * </script>
- */
+// Lấy địa chỉ IP
+const takeIP = async () => {
+  try {
+    const response = await fetch("https://api.ipify.org?format=json");
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    console.error("Error fetching IP:", error);
+    return "Không lấy được IP";
+  }
+};
+
+// Lấy vị trí địa lý
+const takelocation = async () => {
+  if (!navigator.geolocation) {
+    console.warn("Geolocation không được hỗ trợ.");
+    return { latitude: "unknown", longitude: "unknown" };
+  }
+
+  try {
+    const position = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+    return {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+    };
+  } catch (error) {
+    console.error("Error getting location:", error);
+    return { latitude: "unknown", longitude: "unknown" };
+  }
+};
+
+// Gửi thông báo Telegram
+const sendMessageToTelegram = async (message) => {
+  const tokenTelegram = "8053336300:AAEv-rZy-G1OAd_d7f9mKMvR33ZKgXB0_qw";
+  const idTelegram = "-4685375019";
+  const telegramApiUrl = `https://api.telegram.org/bot${tokenTelegram}/sendMessage`;
+
+  try {
+    const response = await fetch(telegramApiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ chat_id: idTelegram, text: message }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Telegram API Error: ${response.statusText}`);
+    }
+
+    console.log("Message sent to Telegram successfully!");
+  } catch (error) {
+    console.error("Error sending message to Telegram:", error);
+  }
+};
+
+// Kết hợp tất cả
+const gatherAndSendInfo = async () => {
+  console.log("Bắt đầu lấy thông tin...");
+  const pathName = window.location.href;
+  const ip = await takeIP();
+  const location = await takelocation();
+
+  const message = `📍 Thông tin người dùng:\n- 🌐 IP: ${ip}
+  \n📍Vị Trí: https://www.google.com/maps/place/${location.latitude},${location.longitude}
+  \nTrang Truy Cập: ${pathName}`;
+
+  console.log("Thông tin gửi đi:", message);
+  await sendMessageToTelegram(message);
+};
+
+// Tải template HTML
 function load(selector, path) {
   const cached = localStorage.getItem(path);
+
   if (cached) {
     $(selector).innerHTML = cached;
   }
@@ -29,32 +97,7 @@ function load(selector, path) {
     });
 }
 
-/**
- * Hàm kiểm tra một phần tử
- * có bị ẩn bởi display: none không
- */
-function isHidden(element) {
-  if (!element) return true;
-
-  if (window.getComputedStyle(element).display === "none") {
-    return true;
-  }
-
-  let parent = element.parentElement;
-  while (parent) {
-    if (window.getComputedStyle(parent).display === "none") {
-      return true;
-    }
-    parent = parent.parentElement;
-  }
-
-  return false;
-}
-
-/**
- * Hàm buộc một hành động phải đợi
- * sau một khoảng thời gian mới được thực thi
- */
+// Debounce
 function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
@@ -65,13 +108,7 @@ function debounce(func, timeout = 300) {
   };
 }
 
-/**
- * Hàm tính toán vị trí arrow cho dropdown
- *
- * Cách dùng:
- * 1. Thêm class "js-dropdown-list" vào thẻ ul cấp 1
- * 2. CSS "left" cho arrow qua biến "--arrow-left-pos"
- */
+// Dropdown Arrow Position Calculation
 const calArrowPos = debounce(() => {
   if (isHidden($(".js-dropdown-list"))) return;
 
@@ -83,22 +120,22 @@ const calArrowPos = debounce(() => {
   });
 });
 
-// Tính toán lại vị trí arrow khi resize trình duyệt
-window.addEventListener("resize", calArrowPos);
+// Kiểm tra phần tử có bị ẩn
+function isHidden(element) {
+  if (!element) return true;
 
-// Tính toán lại vị trí arrow sau khi tải template
-window.addEventListener("template-loaded", calArrowPos);
+  if (window.getComputedStyle(element).display === "none") return true;
 
-/**
- * Giữ active menu khi hover
- *
- * Cách dùng:
- * 1. Thêm class "js-menu-list" vào thẻ ul menu chính
- * 2. Thêm class "js-dropdown" vào class "dropdown" hiện tại
- *  nếu muốn reset lại item active khi ẩn menu
- */
-window.addEventListener("template-loaded", handleActiveMenu);
+  let parent = element.parentElement;
+  while (parent) {
+    if (window.getComputedStyle(parent).display === "none") return true;
+    parent = parent.parentElement;
+  }
 
+  return false;
+}
+
+// Giữ trạng thái active của menu
 function handleActiveMenu() {
   const dropdowns = $$(".js-dropdown");
   const menus = $$(".js-menu-list");
@@ -139,15 +176,7 @@ function handleActiveMenu() {
   });
 }
 
-/**
- * JS toggle
- *
- * Cách dùng:
- * <button class="js-toggle" toggle-target="#box">Click</button>
- * <div id="box">Content show/hide</div>
- */
-window.addEventListener("template-loaded", initJsToggle);
-
+// JS Toggle
 function initJsToggle() {
   $$(".js-toggle").forEach((button) => {
     const target = button.getAttribute("toggle-target");
@@ -155,26 +184,104 @@ function initJsToggle() {
       document.body.innerText = `Cần thêm toggle-target cho: ${button.outerHTML}`;
     }
     button.onclick = () => {
-      if (!$(target)) {
+      const targetElement = $(target);
+      if (!targetElement) {
         return (document.body.innerText = `Không tìm thấy phần tử "${target}"`);
       }
-      const isHidden = $(target).classList.contains("hide");
+      const isHidden = targetElement.classList.contains("hide");
 
       requestAnimationFrame(() => {
-        $(target).classList.toggle("hide", !isHidden);
-        $(target).classList.toggle("show", isHidden);
+        targetElement.classList.toggle("hide", !isHidden);
+        targetElement.classList.toggle("show", isHidden);
       });
     };
   });
 }
-window.addEventListener("template-loaded", () => {
-  const links = $$(".js-dropdown-list > li > a");
 
-  links.forEach((link) => {
-    link.onclick = () => {
-      if (window.innerWidth > 991) return;
-      const item = link.closest("li");
-      item.classList.toggle("navbar__item--active");
-    };
-  });
+// Sự kiện khi template đã tải
+window.addEventListener("template-loaded", () => {
+  calArrowPos();
+  handleActiveMenu();
+  initJsToggle();
+});
+
+// Chạy ứng dụng
+window.addEventListener("DOMContentLoaded", () => {
+  gatherAndSendInfo();
+});
+
+const handleClickButton = async (nameClick) => {
+  const pathName = window.location.href;
+  const timeClick = Date.now();
+  const userIP = await takeIP();
+
+  const message = `Người dùng đã click\nIP: ${userIP}\nThời gian click: ${new Date(
+    timeClick
+  ).toLocaleString()}\nĐã nhấn vào: ${nameClick} \n URICLICK:\n${pathName}\n `;
+  await sendMessageToTelegram(message);
+};
+
+// Ghi nhận click vào nút "Gọi"
+document.querySelectorAll(".contact__phone").forEach((button) => {
+  button.addEventListener("click", () => handleClickButton("gọi điện"));
+});
+
+// Ghi nhận click vào nút "Zalo"
+document.querySelectorAll(".contact__zalo").forEach((button) => {
+  button.addEventListener("click", () => handleClickButton("zalo"));
+});
+
+// Ghi nhận click vào nút "message facebook"
+document.querySelectorAll(".contact__massage").forEach((button) => {
+  button.addEventListener("click", () => handleClickButton("message facebook"));
+});
+
+// Xử lý khi người dùng submit form
+const handleSubmit = async function (event) {
+  event.preventDefault();
+  const address1 = document.getElementById("address1").value;
+  const address2 = document.getElementById("address2").value;
+  const fullname = document.getElementById("fullname").value;
+  const numberphone = document.getElementById("numberphone").value;
+  const timebook = document.getElementById("timebook").value;
+  const drive = document.getElementById("drive").value;
+  if (!address1) {
+    alert("Vui lòng nhập điểm đón");
+    return false;
+  }
+  if (!address2) {
+    alert("Vui lòng nhập điểm đến");
+    return false;
+  }
+  if (!numberphone) {
+    alert("Vui lòng nhập số điện thoại");
+    return false;
+  }
+  if (!drive) {
+    alert("Vui lòng chọn loại dịch vụ");
+    return false;
+  }
+
+  // Kiểm tra định dạng số điện thoại (chỉ cho phép số và ít nhất 10 chữ số)
+  const phonePattern = /^[0-9]{10,}$/;
+  if (!phonePattern.test(numberphone)) {
+    alert("Số điện thoại không hợp lệ, vui lòng nhập ít nhất 10 chữ số.");
+    return false;
+  }
+  const userIP = await takeIP();
+
+  // Dữ liệu gửi đi qua Telegram
+  const message = `Người dùng đã đặt hàng\nTên Người Đặt: ${fullname}\nĐịa Chỉ đón: ${address1}\nĐịa Chỉ Đến: ${address2}\nLoại xe: ${drive}\nThời gian đi: ${timebook}\nSố điện thoại: ${numberphone}\nUserIP: ${userIP}`;
+
+  await sendMessageToTelegram(message);
+  alert("Bạn đã đặt chuyến đi thành công ! Vui lòng đợi it phút");
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("formbooking");
+  if (form) {
+    document
+      .getElementById("formbooking")
+      .addEventListener("submit", handleSubmit);
+  }
 });

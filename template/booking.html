@@ -1,13 +1,18 @@
-<form action="" class="booking__form">
-  <h3 class="booking__title">BOOKING ONLINE</h3>
+<form
+  class="form booking__form"
+  method="post"
+  id="formbooking"
+  autocomplete="on"
+>
+  <h3 class="booking__title">ĐẶT XE ONLINE</h3>
   <div class="booking__form-inner d-flex">
     <div class="booking__item">
       <i class="fas booking__item--icon1"></i>
       <input
         type="text"
-        name=""
-        id=""
-        placeholder="Điểm đón"
+        name="address1"
+        id="address1"
+        placeholder="Địa Chỉ Đón"
         class="booking__input"
       />
     </div>
@@ -15,29 +20,32 @@
       <i class="fas fa-map-marker-alt booking__item--icon2"></i>
       <input
         type="text"
-        name=""
-        id=""
-        placeholder="Điểm đến"
+        name="address2"
+        id="address2"
+        placeholder="Địa Chỉ Đến"
         class="booking__input"
       />
     </div>
+
+    <!-- Thay đổi từ input sang select cho loại dịch vụ -->
     <div class="booking__item">
       <i class="fa-solid fa-car"></i>
-      <input
-        type="text"
-        name=""
-        id=""
-        placeholder="Loại dịch vụ"
-        class="booking__input"
-      />
+      <select name="drive" id="drive" class="booking__input">
+        <option value="" disabled selected>Chọn loại dịch vụ</option>
+        <option value="Taxi 4 chỗ">Taxi 4 chỗ</option>
+        <option value="Taxi 7 chỗ">Taxi 7 chỗ</option>
+        <option value="Taxi 16 chỗ">Taxi 16 chỗ</option>
+        <option value="Taxi xe máy">Grab xe máy</option>
+      </select>
     </div>
+
     <div class="booking__item">
       <i class="fas fa-user"></i>
       <input
         type="text"
-        name=""
-        id=""
-        placeholder="Họ và Tên"
+        name="fullname"
+        id="fullname"
+        placeholder="Tên Khách Hàng:"
         class="booking__input"
       />
     </div>
@@ -45,8 +53,8 @@
       <i class="fas fa-phone-square-alt"></i>
       <input
         type="tel"
-        name=""
-        id=""
+        name="numberphone"
+        id="numberphone"
         placeholder="Số điện thoại"
         class="booking__input"
       />
@@ -54,15 +62,17 @@
     <div class="booking__item">
       <i class="fa-regular fa-clock"></i>
       <input
-        type="text"
-        name=""
-        id=""
-        placeholder="Thời gian"
+        type="datetime-local"
+        name="timebook"
+        id="timebook"
         class="booking__input"
       />
     </div>
   </div>
-  <a href="tel:0876347453">
-    <button class="booking__submit btn btn--primary">ĐẶT NGAY</button>
-  </a>
+  <button
+    type="submit"
+    class="booking-item__row booking__submit btn btn--primary"
+  >
+    ĐẶT NGAY
+  </button>
 </form>
