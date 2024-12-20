@@ -221,24 +221,8 @@ const handleClickButton = async (nameClick) => {
   await sendMessageToTelegram(message);
 };
 
-// Ghi nhận click vào nút "Gọi"
-document.querySelectorAll(".contact__phone").forEach((button) => {
-  button.addEventListener("click", () => handleClickButton("gọi điện"));
-});
-
-// Ghi nhận click vào nút "Zalo"
-document.querySelectorAll(".contact__zalo").forEach((button) => {
-  button.addEventListener("click", () => handleClickButton("zalo"));
-});
-
-// Ghi nhận click vào nút "message facebook"
-document.querySelectorAll(".contact__massage").forEach((button) => {
-  button.addEventListener("click", () => handleClickButton("message facebook"));
-});
-
 // Xử lý khi người dùng submit form
-const handleSubmit = async function (event) {
-  event.preventDefault();
+const handleSubmit = async function () {
   const address1 = document.getElementById("address1").value;
   const address2 = document.getElementById("address2").value;
   const fullname = document.getElementById("fullname").value;
@@ -276,12 +260,3 @@ const handleSubmit = async function (event) {
   await sendMessageToTelegram(message);
   alert("Bạn đã đặt chuyến đi thành công ! Vui lòng đợi it phút");
 };
-
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("formbooking");
-  if (form) {
-    document
-      .getElementById("formbooking")
-      .addEventListener("submit", handleSubmit);
-  }
-});
